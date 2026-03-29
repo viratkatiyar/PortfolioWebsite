@@ -6,9 +6,7 @@ const About = () => {
       <div className="about-me">
         <h3 className="title">About Me</h3>
         <p className="para">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quis
-          dolores numquam iusto Ratione earum ducimus autem id iure pariatur
-          dolorum quae maiores.
+          I am a CS Student deeply into Software Development, Problem-Solving, and Architecting efficient Systems. Equipped with a Strong Foundation in Data Structures and Algorithms, I specialize in Java Backend Development. I actively hone my Analytical Skills through various competitions and am driven to contribute to high-impact projects at innovative, tech-driven companies.
         </p>
       </div>
     </div>

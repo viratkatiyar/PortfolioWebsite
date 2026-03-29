@@ -10,6 +10,10 @@ import {
   CylinderCollider,
   RapierRigidBody,
 } from "@react-three/rapier";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const textureLoader = new THREE.TextureLoader();
 const imageUrls = [
@@ -126,31 +130,39 @@ function Pointer({ vec = new THREE.Vector3(), isActive }: PointerProps) {
 
 const TechStack = () => {
   const [isActive, setIsActive] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY || document.documentElement.scrollTop;
-      const threshold = document
-        .getElementById("work")!
-        .getBoundingClientRect().top;
-      setIsActive(scrollY > threshold);
-    };
-    document.querySelectorAll(".header a").forEach((elem) => {
-      const element = elem as HTMLAnchorElement;
-      element.addEventListener("click", () => {
-        const interval = setInterval(() => {
-          handleScroll();
-        }, 10);
-        setTimeout(() => {
-          clearInterval(interval);
-        }, 1000);
+    // Wait for GSAP ScrollTrigger to finish computing pin spacers before
+    // we set up our own scroll-based observer. Using ScrollTrigger.addEventListener
+    // "refresh" ensures we run after all pin spacers are inserted.
+    const setup = () => {
+      const el = sectionRef.current;
+      if (!el) return;
+
+      const st = ScrollTrigger.create({
+        trigger: el,
+        start: "top 90%",
+        end: "bottom 10%",
+        onEnter: () => setIsActive(true),
+        onLeave: () => setIsActive(false),
+        onEnterBack: () => setIsActive(true),
+        onLeaveBack: () => setIsActive(false),
       });
-    });
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
+
+      return () => st.kill();
     };
+
+    // Delay until GSAP has had a chance to refresh after Work's pin is set up
+    const timeout = setTimeout(() => {
+      ScrollTrigger.refresh();
+      const cleanup = setup();
+      return cleanup;
+    }, 500);
+
+    return () => clearTimeout(timeout);
   }, []);
+
   const materials = useMemo(() => {
     return textures.map(
       (texture) =>
@@ -167,11 +179,14 @@ const TechStack = () => {
   }, []);
 
   return (
-    <div className="techstack">
+    <div className="techstack" ref={sectionRef}>
       <h2> My Techstack</h2>
 
+      {/* frameloop="demand" stops the RAF loop when nothing moves,
+          preventing GPU contention with GSAP's Work scroll animation */}
       <Canvas
         shadows
+        frameloop={isActive ? "always" : "demand"}
         gl={{ alpha: true, stencil: false, depth: false, antialias: false }}
         camera={{ position: [0, 0, 20], fov: 32.5, near: 1, far: 100 }}
         onCreated={(state) => (state.gl.toneMappingExposure = 1.5)}
