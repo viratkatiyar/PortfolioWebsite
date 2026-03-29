@@ -23,6 +23,21 @@
   --vh: 100vh;
   --vh: 100svh;
 }
+
+.magnetic-container {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+}
+
+.magnetic-container a {
+  position: absolute;
+  left: var(--siLeft, 50%);
+  top: var(--siTop, 50%);
+  transform: translate(-50%, -50%);
+  will-change: left, top;
+}
 h1,
 h2,
 h3,

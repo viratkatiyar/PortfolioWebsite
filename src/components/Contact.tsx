@@ -1,5 +1,6 @@
 import { MdArrowOutward, MdCopyright } from "react-icons/md";
 import "./styles/Contact.css";
+import MagneticLink from "./MagneticLink";
 
 const Contact = () => {
   return (
@@ -23,22 +24,33 @@ const Contact = () => {
           </div>
           <div className="contact-box">
             <h4>Social</h4>
-            <a
+            <MagneticLink
               href="https://twitter.com/viratkatiyar21"
               target="_blank"
+              rel="noopener noreferrer"
               data-cursor="disable"
               className="contact-social"
             >
               Twitter <MdArrowOutward />
-            </a>
-            <a
+            </MagneticLink>
+            <MagneticLink
               href="https://www.instagram.com/theviratkatiyar.exe/"
               target="_blank"
+              rel="noopener noreferrer"
               data-cursor="disable"
               className="contact-social"
             >
               Instagram <MdArrowOutward />
-            </a>
+            </MagneticLink>
+            <MagneticLink
+              href="https://youtube.com/@virat.katiyar"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-cursor="disable"
+              className="contact-social"
+            >
+              Youtube <MdArrowOutward />
+            </MagneticLink>
           </div>
           <div className="contact-box">
             <h2>

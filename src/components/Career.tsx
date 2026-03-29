@@ -14,22 +14,6 @@ interface LeetCodeStats {
   acceptanceRate: string;
 }
 
-interface CodeforcesStats {
-  handle: string;
-  rating: number;
-  maxRating: number;
-  rank: string;
-  maxRank: string;
-  solved: number;
-}
-
-interface CodeChefStats {
-  handle: string;
-  rating: number;
-  stars: string;
-  solved: number;
-  globalRank: number;
-}
 
 // ─── Individual Cards ──────────────────────────────────────────────────────────
 
@@ -139,51 +123,10 @@ const LeetCodeCard = () => {
 };
 
 const CodeforcesCard = () => {
-  const [stats, setStats] = useState<CodeforcesStats | null>(null);
-  const [loading, setLoading] = useState(true);
   const user = "viratkatiyar";
 
-  useEffect(() => {
-    Promise.all([
-      fetch(`https://codeforces.com/api/user.info?handles=${user}`).then((r) => r.json()),
-      fetch(`https://codeforces.com/api/user.status?handle=${user}&count=1000`).then((r) => r.json()),
-    ])
-      .then(([info, status]) => {
-        const u = info?.result?.[0];
-        const accepted = status?.result?.filter(
-          (s: { verdict: string; problem: { contestId: number; index: string } }) => s.verdict === "OK"
-        );
-        const unique = new Set(
-          accepted?.map((s: { problem: { contestId: number; index: string } }) => `${s.problem.contestId}-${s.problem.index}`)
-        ).size;
-
-        if (u) {
-          setStats({
-            handle: u.handle,
-            rating: u.rating ?? 0,
-            maxRating: u.maxRating ?? 0,
-            rank: u.rank ?? "unrated",
-            maxRank: u.maxRank ?? "unrated",
-            solved: unique,
-          });
-        }
-      })
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, []);
-
-  const ratingColor = (rating: number) => {
-    if (rating >= 2400) return "#ff0000";
-    if (rating >= 2100) return "#ff8c00";
-    if (rating >= 1900) return "#aa00aa";
-    if (rating >= 1600) return "#0000ff";
-    if (rating >= 1400) return "#03a89e";
-    if (rating >= 1200) return "#008000";
-    return "#808080";
-  };
-
   return (
-    <div className="cp-card cp-card--codeforces">
+    <div className="cp-card cp-card--codeforces cp-card--simple">
       <div className="cp-card__header">
         <SiCodeforces className="cp-icon" />
         <div>
@@ -200,99 +143,15 @@ const CodeforcesCard = () => {
           <MdArrowOutward />
         </a>
       </div>
-
-      {loading ? (
-        <div className="cp-skeleton-wrap">
-          <div className="cp-skeleton" />
-          <div className="cp-skeleton cp-skeleton--sm" />
-          <div className="cp-skeleton cp-skeleton--sm" />
-        </div>
-      ) : !stats ? (
-        <p className="cp-error">Could not load stats.</p>
-      ) : (
-        <>
-          <div className="cp-stat-hero">
-            <span
-              className="cp-stat-big"
-              style={{ color: ratingColor(stats.rating) }}
-            >
-              {stats.rating || "Unrated"}
-            </span>
-            <span className="cp-stat-label">Current Rating</span>
-          </div>
-
-          <div className="cp-rank-badge" style={{ borderColor: ratingColor(stats.rating) }}>
-            <span style={{ color: ratingColor(stats.rating) }}>
-              {stats.rank.charAt(0).toUpperCase() + stats.rank.slice(1)}
-            </span>
-          </div>
-
-          <div className="cp-meta-row">
-            <div className="cp-meta-item">
-              <span className="cp-meta-val">{stats.solved}</span>
-              <span className="cp-meta-key">Problems Solved</span>
-            </div>
-            <div className="cp-meta-item">
-              <span className="cp-meta-val">{stats.maxRating}</span>
-              <span className="cp-meta-key">Peak Rating</span>
-            </div>
-          </div>
-
-          <div className="cp-meta-row">
-            <div className="cp-meta-item cp-meta-item--full">
-              <span className="cp-meta-val cp-meta-val--sm">{stats.maxRank.charAt(0).toUpperCase() + stats.maxRank.slice(1)}</span>
-              <span className="cp-meta-key">Best Rank Achieved</span>
-            </div>
-          </div>
-        </>
-      )}
     </div>
   );
 };
 
 const CodeChefCard = () => {
-  const [stats, setStats] = useState<CodeChefStats | null>(null);
-  const [loading, setLoading] = useState(true);
   const user = "viratkatiyar21";
 
-  useEffect(() => {
-    // CodeChef public API
-    fetch(`https://www.codechef.com/api/rankings/CC-STARTER-100?itemsPerPage=1&order=asc&page=1&search=${user}&sortBy=rank`)
-      .then(() => {
-        // The API often blocks CORS – use a fallback with known public data
-        // We'll use codechef-readme-stats which is confirmed working
-        setStats({
-          handle: user,
-          rating: 1520,
-          stars: "3★",
-          solved: 120,
-          globalRank: 0,
-        });
-      })
-      .catch(() => {
-        setStats({
-          handle: user,
-          rating: 1520,
-          stars: "3★",
-          solved: 120,
-          globalRank: 0,
-        });
-      })
-      .finally(() => setLoading(false));
-  }, []);
-
-  const starsToColor = (stars: string) => {
-    if (stars.startsWith("7")) return "#ff7f00";
-    if (stars.startsWith("6")) return "#ff7f00";
-    if (stars.startsWith("5")) return "#684273";
-    if (stars.startsWith("4")) return "#3366cc";
-    if (stars.startsWith("3")) return "#1a97f0";
-    if (stars.startsWith("2")) return "#666666";
-    return "#666666";
-  };
-
   return (
-    <div className="cp-card cp-card--codechef">
+    <div className="cp-card cp-card--codechef cp-card--simple">
       <div className="cp-card__header">
         <SiCodechef className="cp-icon" />
         <div>
@@ -309,47 +168,6 @@ const CodeChefCard = () => {
           <MdArrowOutward />
         </a>
       </div>
-
-      {loading ? (
-        <div className="cp-skeleton-wrap">
-          <div className="cp-skeleton" />
-          <div className="cp-skeleton cp-skeleton--sm" />
-          <div className="cp-skeleton cp-skeleton--sm" />
-        </div>
-      ) : !stats ? (
-        <p className="cp-error">Could not load stats.</p>
-      ) : (
-        <>
-          <div className="cp-stat-hero">
-            <span className="cp-stat-big">{stats.rating}</span>
-            <span className="cp-stat-label">Current Rating</span>
-          </div>
-
-          <div className="cp-rank-badge" style={{ borderColor: starsToColor(stats.stars) }}>
-            <span style={{ color: starsToColor(stats.stars), letterSpacing: 2 }}>
-              {stats.stars}
-            </span>
-          </div>
-
-          <div className="cp-meta-row">
-            <div className="cp-meta-item">
-              <span className="cp-meta-val">{stats.solved}+</span>
-              <span className="cp-meta-key">Problems Solved</span>
-            </div>
-            <div className="cp-meta-item">
-              <span className="cp-meta-val">Active</span>
-              <span className="cp-meta-key">Status</span>
-            </div>
-          </div>
-
-          <div className="cp-meta-row">
-            <div className="cp-meta-item cp-meta-item--full">
-              <span className="cp-meta-val cp-meta-val--sm">Division 3</span>
-              <span className="cp-meta-key">Current Division</span>
-            </div>
-          </div>
-        </>
-      )}
     </div>
   );
 };

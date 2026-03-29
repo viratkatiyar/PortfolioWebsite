@@ -61,6 +61,11 @@
   overflow: hidden;
 }
 
+.cp-card--simple {
+  min-height: auto;
+  justify-content: center;
+}
+
 .cp-card::before {
   content: "";
   position: absolute;

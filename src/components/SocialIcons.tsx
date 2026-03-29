@@ -3,98 +3,74 @@ import {
   FaInstagram,
   FaLinkedinIn,
   FaTwitter,
+  FaYoutube,
 } from "react-icons/fa6";
 import { SiLeetcode, SiCodechef, SiCodeforces } from "react-icons/si";
 import "./styles/SocialIcons.css";
 import { TbNotes } from "react-icons/tb";
-import { useEffect } from "react";
 import HoverLinks from "./HoverLinks";
+import MagneticLink from "./MagneticLink";
 
 const SocialIcons = () => {
-  useEffect(() => {
-    const social = document.getElementById("social") as HTMLElement;
-
-    social.querySelectorAll("span").forEach((item) => {
-      const elem = item as HTMLElement;
-      const link = elem.querySelector("a") as HTMLElement;
-
-      const rect = elem.getBoundingClientRect();
-      let mouseX = rect.width / 2;
-      let mouseY = rect.height / 2;
-      let currentX = 0;
-      let currentY = 0;
-
-      const updatePosition = () => {
-        currentX += (mouseX - currentX) * 0.1;
-        currentY += (mouseY - currentY) * 0.1;
-
-        link.style.setProperty("--siLeft", `${currentX}px`);
-        link.style.setProperty("--siTop", `${currentY}px`);
-
-        requestAnimationFrame(updatePosition);
-      };
-
-      const onMouseMove = (e: MouseEvent) => {
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        if (x < 40 && x > 10 && y < 40 && y > 5) {
-          mouseX = x;
-          mouseY = y;
-        } else {
-          mouseX = rect.width / 2;
-          mouseY = rect.height / 2;
-        }
-      };
-
-      document.addEventListener("mousemove", onMouseMove);
-
-      updatePosition();
-
-      return () => {
-        elem.removeEventListener("mousemove", onMouseMove);
-      };
-    });
-  }, []);
-
   return (
     <div className="icons-section">
       <div className="social-icons" data-cursor="icons" id="social">
-        <span>
-          <a href="https://www.codechef.com/users/viratkatiyar21" target="_blank">
-            <SiCodechef />
-          </a>
-        </span>
-        <span>
-          <a href="https://leetcode.com/u/viratkatiyar/" target="_blank">
-            <SiLeetcode />
-          </a>
-        </span>
-        <span>
-          <a href="https://codeforces.com/profile/viratkatiyar" target="_blank">
-            <SiCodeforces />
-          </a>
-        </span>
-        <span>
-          <a href="https://github.com/viratkatiyar" target="_blank">
-            <FaGithub />
-          </a>
-        </span>
-        <span>
-          <a href="https://www.linkedin.com/in/viratkatiyar/" target="_blank">
-            <FaLinkedinIn />
-          </a>
-        </span>
-        <span>
-          <a href="https://twitter.com/viratkatiyar21" target="_blank">
-            <FaTwitter />
-          </a>
-        </span>
-        <span>
-          <a href="https://www.instagram.com/theviratkatiyar.exe/" target="_blank">
-            <FaInstagram />
-          </a>
-        </span>
+        <MagneticLink
+          href="https://www.codechef.com/users/viratkatiyar21"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <SiCodechef />
+        </MagneticLink>
+        <MagneticLink
+          href="https://leetcode.com/u/viratkatiyar/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <SiLeetcode />
+        </MagneticLink>
+        <MagneticLink
+          href="https://codeforces.com/profile/viratkatiyar"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <SiCodeforces />
+        </MagneticLink>
+        <MagneticLink
+          href="https://github.com/viratkatiyar"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <FaGithub />
+        </MagneticLink>
+        <MagneticLink
+          href="https://www.linkedin.com/in/viratkatiyar/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <FaLinkedinIn />
+        </MagneticLink>
+        <MagneticLink
+          href="https://twitter.com/viratkatiyar21"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <FaTwitter />
+        </MagneticLink>
+        <MagneticLink
+          href="https://www.instagram.com/theviratkatiyar.exe/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <FaInstagram />
+        </MagneticLink>
+        <MagneticLink
+          href="https://youtube.com/@virat.katiyar"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <FaYoutube />
+        </MagneticLink>
       </div>
       <a className="resume-button" href="#">
         <HoverLinks text="RESUME" />
