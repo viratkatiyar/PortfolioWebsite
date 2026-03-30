@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import setCharacter from "./utils/character";
 import setLighting from "./utils/lighting";
@@ -17,9 +17,9 @@ const Scene = () => {
   const canvasDiv = useRef<HTMLDivElement | null>(null);
   const hoverDivRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef(new THREE.Scene());
+  const characterRef = useRef<THREE.Object3D | null>(null);
   const { setLoading } = useLoading();
 
-  const [character, setChar] = useState<THREE.Object3D | null>(null);
   useEffect(() => {
     if (canvasDiv.current) {
       const rect = canvasDiv.current.getBoundingClientRect();
@@ -61,7 +61,7 @@ const Scene = () => {
           }
           mixer = animations.mixer;
           const character = gltf.scene;
-          setChar(character);
+          characterRef.current = character;
           scene.add(character);
           headBone = character.getObjectByName("spine006") || null;
           const foundScreenLight = character.getObjectByName("screenlight");
@@ -136,7 +136,7 @@ const Scene = () => {
         scene.clear();
         renderer.dispose();
         window.removeEventListener("resize", () =>
-          handleResize(renderer, camera, canvasDiv, character!)
+          handleResize(renderer, camera, canvasDiv, characterRef.current!)
         );
         if (canvasDiv.current) {
           canvasDiv.current.removeChild(renderer.domElement);
@@ -148,7 +148,7 @@ const Scene = () => {
         }
       };
     }
-  }, [setLoading, character]);
+  }, [setLoading]);
 
   return (
     <>
