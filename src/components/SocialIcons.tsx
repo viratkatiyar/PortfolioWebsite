@@ -8,7 +8,6 @@ import {
 import { SiLeetcode, SiCodechef, SiCodeforces } from "react-icons/si";
 import "./styles/SocialIcons.css";
 import { TbNotes } from "react-icons/tb";
-import HoverLinks from "./HoverLinks";
 import MagneticLink from "./MagneticLink";
 
 const SocialIcons = () => {
@@ -72,11 +71,20 @@ const SocialIcons = () => {
           <FaYoutube />
         </MagneticLink>
       </div>
-      <a className="resume-button" href="#">
-        <HoverLinks text="RESUME" />
-        <span>
+
+      <a
+        className="resume-button"
+        href="https://drive.google.com/file/d/1355uPjGsWj7-MxkeWffMt6meUjW8P44i/view?usp=sharing"
+        target="_blank"
+        rel="noopener noreferrer"
+        id="resume-btn"
+      >
+        <span className="resume-button__icon">
           <TbNotes />
         </span>
+        <span className="resume-button__text">View Resume</span>
+        <span className="resume-button__arrow">↗</span>
+        <span className="resume-button__glow" />
       </a>
     </div>
   );
